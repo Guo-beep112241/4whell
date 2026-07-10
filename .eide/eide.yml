@@ -6,6 +6,7 @@ packDir: null
 srcDirs:
   - Core
   - Drivers
+  - Middlewares
 virtualFolder:
   name: <virtual_root>
   files:
@@ -26,6 +27,10 @@ targets:
         - Drivers/CMSIS/Device/ST/STM32F4xx/Include
         - Drivers/CMSIS/Include
         - Drivers/STM32F4xx_HAL_Driver/Inc
+        - Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2
+        - Middlewares/Third_Party/FreeRTOS/Source/include
+        - Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F
+        - Core/Src
       libList: []
     excludeList: []
     settings:
@@ -35,7 +40,7 @@ targets:
       GCC:
         archExtensions: ""
         cpuType: Cortex-M4
-        floatingPointHardware: none
+        floatingPointHardware: single
         options:
           version: 5
           afterBuildTasks: []
