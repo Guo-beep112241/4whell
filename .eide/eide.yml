@@ -3,10 +3,13 @@ name: 4whell
 type: ARM
 deviceName: null
 packDir: null
-srcDirs: []
+srcDirs:
+  - Core
+  - Drivers
 virtualFolder:
   name: <virtual_root>
-  files: []
+  files:
+    - path: startup_stm32f401xc.s
   folders: []
 dependenceList: []
 outDir: build
@@ -15,8 +18,14 @@ miscInfo:
 targets:
   Debug:
     cppPreprocessAttrs:
-      defineList: []
-      incList: []
+      defineList:
+        - USE_HAL_DRIVER
+        - STM32F401xC
+      incList:
+        - Core/Inc
+        - Drivers/CMSIS/Device/ST/STM32F4xx/Include
+        - Drivers/CMSIS/Include
+        - Drivers/STM32F4xx_HAL_Driver/Inc
       libList: []
     excludeList: []
     settings:
@@ -25,7 +34,7 @@ targets:
     toolchainConfigMap:
       GCC:
         archExtensions: ""
-        cpuType: Cortex-M3
+        cpuType: Cortex-M4
         floatingPointHardware: none
         options:
           version: 5
@@ -55,7 +64,7 @@ targets:
             LIB_FLAGS: -lm
             output-format: elf
             remove-unused-input-sections: true
-        scatterFilePath: <YOUR_LINKER_SCRIPT>.lds
+        scatterFilePath: STM32F401XX_FLASH.ld
         storageLayout:
           RAM: []
           ROM: []
@@ -70,4 +79,9 @@ targets:
         otherCmds: ""
         proType: 1
         speed: 8000
-    uploader: JLink
+      OpenOCD:
+        baseAddr: "0x08000000"
+        bin: ""
+        interface: stlink
+        target: stm32f4x
+    uploader: OpenOCD
