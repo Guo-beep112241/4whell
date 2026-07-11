@@ -16,7 +16,13 @@ static inline int TB6612_IsMotorIdValid(TB6612_MotorId motor_id)
 }
 
 int TB6612_Init(void)
-{
+{   
+    static uint8_t is_initialized = 0;
+    if (is_initialized) {
+        return 0;  // 已经初始化过了，直接返回
+    }
+    
+
     /* 初始化状态变量 */
     for (int i = 0; i < 4; i++)
     {
@@ -24,13 +30,7 @@ int TB6612_Init(void)
         g_motor_speed[i] = 0;
     }
 
-      /* 先启动 4 路 PWM */
-    HAL_TIM_PWM_Start(&htim5, TIM_CHANNEL_1);
-    HAL_TIM_PWM_Start(&htim5, TIM_CHANNEL_2);
-    HAL_TIM_PWM_Start(&htim5, TIM_CHANNEL_3);
-    HAL_TIM_PWM_Start(&htim5, TIM_CHANNEL_4);
 
-    
     // 加入错误检查，确保 PWM 启动成功
     if (HAL_TIM_PWM_Start(&htim5, TIM_CHANNEL_1) != HAL_OK)
         return -1;   // 失败返回 -1
@@ -61,6 +61,7 @@ int TB6612_Init(void)
     HAL_GPIO_WritePin(MOTOR_OUTD1_GPIO_Port, MOTOR_OUTD1_Pin, GPIO_PIN_RESET);
     HAL_GPIO_WritePin(MOTOR_OUTD2_GPIO_Port, MOTOR_OUTD2_Pin, GPIO_PIN_RESET);
 
+    is_initialized = 1;
     return 0;         // 成功返回 0
 }
 

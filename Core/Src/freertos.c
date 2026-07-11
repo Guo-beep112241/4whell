@@ -45,6 +45,13 @@
 
 /* Private variables ---------------------------------------------------------*/
 /* USER CODE BEGIN Variables */
+/* 创建 AppTask 的句柄和属性 */
+osThreadId_t AppTaskHandle;
+const osThreadAttr_t AppTask_attributes = {
+    .name = "AppTask",           // 任务名称（在调试器中显示）
+    .stack_size = 256 * 4,       // 栈大小 1024 字节（如果你的任务逻辑复杂，可以加大）
+    .priority = (osPriority_t) osPriorityNormal,  // 普通优先级
+};
 
 /* USER CODE END Variables */
 /* Definitions for defaultTask */
@@ -96,7 +103,9 @@ void MX_FREERTOS_Init(void) {
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
-  AppTask_Init();
+  // AppTask_Init(); 不能直接调用init函数！！会直接陷入while循环，导致后续任务无法创建和完成
+  AppTaskHandle = osThreadNew(AppTask_Init, NULL, &AppTask_attributes);
+
   /* USER CODE END RTOS_THREADS */
 
   /* USER CODE BEGIN RTOS_EVENTS */

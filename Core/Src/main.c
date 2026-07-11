@@ -79,7 +79,7 @@ int main(void)
   HAL_Init();
 
   /* USER CODE BEGIN Init */
-
+  // TB6612_Init();  目前排查下来在app_task中调用就行。
   /* USER CODE END Init */
 
   /* Configure the system clock */

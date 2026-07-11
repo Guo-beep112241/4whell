@@ -8,6 +8,7 @@ static osThreadId_t testMotorTaskHandle;
 static void TestMotorTask(void *argument)
 {
     TB6612_Init();
+    Encoder_Init();
 
     // 加一个强制检查点，如果电机启动失败，返回值为-1，强制卡死。
     if (TB6612_Init() !=0)
