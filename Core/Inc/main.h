@@ -57,6 +57,24 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
+#define PWMB_Pin GPIO_PIN_1
+#define PWMB_GPIO_Port GPIOA
+#define MOTOR_OUTA2_Pin GPIO_PIN_0
+#define MOTOR_OUTA2_GPIO_Port GPIOB
+#define MOTOR_OUTA1_Pin GPIO_PIN_1
+#define MOTOR_OUTA1_GPIO_Port GPIOB
+#define MOTOR_OUTB2_Pin GPIO_PIN_2
+#define MOTOR_OUTB2_GPIO_Port GPIOB
+#define MOTOR_OUTB1_Pin GPIO_PIN_10
+#define MOTOR_OUTB1_GPIO_Port GPIOB
+#define MOTOR_OUTC1_Pin GPIO_PIN_12
+#define MOTOR_OUTC1_GPIO_Port GPIOB
+#define MOTOR_OUTC2_Pin GPIO_PIN_13
+#define MOTOR_OUTC2_GPIO_Port GPIOB
+#define MOTOR_OUTD2_Pin GPIO_PIN_14
+#define MOTOR_OUTD2_GPIO_Port GPIOB
+#define MOTOR_OUTD1_Pin GPIO_PIN_15
+#define MOTOR_OUTD1_GPIO_Port GPIOB
 
 /* USER CODE BEGIN Private defines */
 
