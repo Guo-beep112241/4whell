@@ -65,6 +65,12 @@ void Error_Handler(void);
 #define PWMC_GPIO_Port GPIOA
 #define PWMD_Pin GPIO_PIN_3
 #define PWMD_GPIO_Port GPIOA
+#define ENCODER_B2_Pin GPIO_PIN_5
+#define ENCODER_B2_GPIO_Port GPIOA
+#define ENCODER_C2_Pin GPIO_PIN_6
+#define ENCODER_C2_GPIO_Port GPIOA
+#define ENCODER_C1_Pin GPIO_PIN_7
+#define ENCODER_C1_GPIO_Port GPIOA
 #define MOTOR_OUTA2_Pin GPIO_PIN_0
 #define MOTOR_OUTA2_GPIO_Port GPIOB
 #define MOTOR_OUTA1_Pin GPIO_PIN_1
@@ -81,6 +87,20 @@ void Error_Handler(void);
 #define MOTOR_OUTD2_GPIO_Port GPIOB
 #define MOTOR_OUTD1_Pin GPIO_PIN_15
 #define MOTOR_OUTD1_GPIO_Port GPIOB
+#define ENCODER_A1_Pin GPIO_PIN_8
+#define ENCODER_A1_GPIO_Port GPIOA
+#define ENCODER_A2_Pin GPIO_PIN_9
+#define ENCODER_A2_GPIO_Port GPIOA
+#define TX_Pin GPIO_PIN_11
+#define TX_GPIO_Port GPIOA
+#define RX_Pin GPIO_PIN_12
+#define RX_GPIO_Port GPIOA
+#define ENCODER_B1_Pin GPIO_PIN_3
+#define ENCODER_B1_GPIO_Port GPIOB
+#define ENCODER_D1_Pin GPIO_PIN_6
+#define ENCODER_D1_GPIO_Port GPIOB
+#define ENCODER_D1B7_Pin GPIO_PIN_7
+#define ENCODER_D1B7_GPIO_Port GPIOB
 
 /* USER CODE BEGIN Private defines */
 
