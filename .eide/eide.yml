@@ -34,6 +34,7 @@ targets:
         - Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F
         - Core/Src
         - Libs/CMSIS-DSP-1.17.0/Include
+        - User
       libList: []
     excludeList: []
     settings:
@@ -90,6 +91,6 @@ targets:
       OpenOCD:
         baseAddr: "0x08000000"
         bin: ""
-        interface: stlink
+        interface: cmsis-dap
         target: stm32f4x
     uploader: OpenOCD

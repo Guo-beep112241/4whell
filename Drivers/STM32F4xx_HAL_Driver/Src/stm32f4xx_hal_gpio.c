@@ -407,6 +407,10 @@ GPIO_PinState HAL_GPIO_ReadPin(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin)
   *            @arg GPIO_PIN_SET: to set the port pin
   * @retval None
   */
+
+// BSRR寄存器的位定义如下：
+// 位0~15	写1 → 对应引脚输出高电平
+// 位16~31	写1 → 对应引脚输出低电平
 void HAL_GPIO_WritePin(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin, GPIO_PinState PinState)
 {
   /* Check the parameters */
