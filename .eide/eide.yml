@@ -8,6 +8,7 @@ srcDirs:
   - Drivers
   - Middlewares
   - Libs
+  - User
 virtualFolder:
   name: <virtual_root>
   files:
@@ -32,7 +33,7 @@ targets:
         - Middlewares/Third_Party/FreeRTOS/Source/include
         - Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F
         - Core/Src
-        - Libs/CMSIS-DSP-1.17.0/Include/dsp
+        - Libs/CMSIS-DSP-1.17.0/Include
       libList: []
     excludeList: []
     settings:
