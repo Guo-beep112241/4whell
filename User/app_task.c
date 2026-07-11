@@ -9,6 +9,13 @@ static void TestMotorTask(void *argument)
 {
     TB6612_Init();
 
+    // 加一个强制检查点，如果电机启动失败，返回值为-1，强制卡死。
+    if (TB6612_Init() !=0)
+    {
+        while(1){osDelay(1000);}  // 初始化失败，停在这里
+    }
+
+
     for (;;)
     {
         // /* --- 测试电机 A：正转 1 秒，停 0.5 秒 --- */

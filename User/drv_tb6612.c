@@ -2,6 +2,8 @@
 
 #include "drv_tb6612.h"
 #include "tim.h"
+#include <assert.h>
+#include <assert.h>
 
 /* ========== 静态状态变量 ========== */
 static TB6612_Direction g_motor_dir[4];   // 4 个电机当前方向
@@ -13,7 +15,7 @@ static inline int TB6612_IsMotorIdValid(TB6612_MotorId motor_id)
     return (motor_id >= TB6612_MOTOR_A && motor_id <= TB6612_MOTOR_D);
 }
 
-void TB6612_Init(void)
+int TB6612_Init(void)
 {
     /* 初始化状态变量 */
     for (int i = 0; i < 4; i++)
@@ -22,11 +24,23 @@ void TB6612_Init(void)
         g_motor_speed[i] = 0;
     }
 
-    /* 先启动 4 路 PWM */
+      /* 先启动 4 路 PWM */
     HAL_TIM_PWM_Start(&htim5, TIM_CHANNEL_1);
     HAL_TIM_PWM_Start(&htim5, TIM_CHANNEL_2);
     HAL_TIM_PWM_Start(&htim5, TIM_CHANNEL_3);
     HAL_TIM_PWM_Start(&htim5, TIM_CHANNEL_4);
+
+    
+    // 加入错误检查，确保 PWM 启动成功
+    if (HAL_TIM_PWM_Start(&htim5, TIM_CHANNEL_1) != HAL_OK)
+        return -1;   // 失败返回 -1
+    if (HAL_TIM_PWM_Start(&htim5, TIM_CHANNEL_2) != HAL_OK)
+        return -1;
+    if (HAL_TIM_PWM_Start(&htim5, TIM_CHANNEL_3) != HAL_OK)
+        return -1;   // 失败返回 -1
+    if (HAL_TIM_PWM_Start(&htim5, TIM_CHANNEL_4) != HAL_OK)
+        return -1;
+    
 
     /* 先把所有电机速度置 0 */
     TB6612_SetMotorSpeed(TB6612_MOTOR_A, 0);
@@ -46,6 +60,8 @@ void TB6612_Init(void)
 
     HAL_GPIO_WritePin(MOTOR_OUTD1_GPIO_Port, MOTOR_OUTD1_Pin, GPIO_PIN_RESET);
     HAL_GPIO_WritePin(MOTOR_OUTD2_GPIO_Port, MOTOR_OUTD2_Pin, GPIO_PIN_RESET);
+
+    return 0;         // 成功返回 0
 }
 
 

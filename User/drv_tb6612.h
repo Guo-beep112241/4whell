@@ -27,7 +27,7 @@ typedef enum
 
 // 声明对外接口函数，这些函数还没有被定义
 
-void TB6612_Init(void);
+int TB6612_Init(void);
 void TB6612_SetMotorSpeed(TB6612_MotorId motor_id, int16_t speed);
 void TB6612_SetMotorDir(TB6612_MotorId motor_id, TB6612_Direction dir);
 void TB6612_EnableMotor(TB6612_MotorId motor_id);
