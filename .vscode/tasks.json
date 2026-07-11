@@ -35,6 +35,21 @@
             "command": "${command:eide.project.clean}",
             "group": "build",
             "problemMatcher": []
+        },
+        {
+            "label": "flash openocd",
+            "type": "shell",
+            "command": "/opt/homebrew/bin/openocd",
+            "args": [
+                "-s", "/Users/guojiayuan/lab/4whell",
+                "-f", "interface/stlink.cfg",
+                "-f", "target/stm32f4x.cfg",
+                "-c", "program \"build/Debug/4whell.hex\" verify",
+                "-c", "reset run",
+                "-c", "exit"
+            ],
+            "group": "build",
+            "problemMatcher": []
         }
     ]
 }
