@@ -4,6 +4,6 @@
 #include "main.h"
 #include "cmsis_os.h"
 
-void AppTask_Init(void);
+void AppTask_Init(void *argument);
 
 #endif
