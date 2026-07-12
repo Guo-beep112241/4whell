@@ -34,7 +34,9 @@ targets:
         - Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F
         - Core/Src
         - Libs/CMSIS-DSP-1.17.0/Include
-        - User
+        - User/app
+        - User/bsp
+        - User/drv
       libList: []
     excludeList: []
     settings:
