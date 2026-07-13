@@ -56,13 +56,6 @@ const osThreadAttr_t defaultTask_attributes = {
   .priority = (osPriority_t) osPriorityNormal,
 };
 
-/* Definitions for motor test task */
-const osThreadAttr_t testTask_attributes = {
-  .name = "motorTest",
-  .stack_size = 256 * 4,
-  .priority = (osPriority_t) osPriorityNormal,
-};
-
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
 
@@ -107,7 +100,7 @@ void MX_FREERTOS_Init(void) {
   // AppTask_Init(); 不能直接调用init函数！！会直接陷入while循环，导致后续任务无法创建和完成
   
   /* 创建电机测试任务 */
-  osThreadNew(AppTest_Task, NULL, &testTask_attributes);
+  // osThreadNew(AppTest_Task, NULL, &testTask_attributes);
 
   /* USER CODE END RTOS_THREADS */
 

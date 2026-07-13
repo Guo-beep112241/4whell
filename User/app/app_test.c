@@ -14,15 +14,15 @@ void AppTest_Task(void *argument)
     (void)argument;  /* 未使用 */
 
     /* ---------- 初始化 TB6612 驱动 ---------- */
-    if (DRV_TB6612_Init() != HAL_OK)
-    {
-        /* 初始化失败，闪烁 LED 报警后死循环 */
-        for (;;)
-        {
-            HAL_GPIO_TogglePin(LED_signalOUT_GPIO_Port, LED_signalOUT_Pin);
-            osDelay(200);
-        }
-    }
+    // if (DRV_TB6612_Init() != HAL_OK)
+    // {
+    //     /* 初始化失败，闪烁 LED 报警后死循环 */
+    //     for (;;)
+    //     {
+    //         HAL_GPIO_TogglePin(LED_signalOUT_GPIO_Port, LED_signalOUT_Pin);
+    //         osDelay(200);
+    //     }
+    // }
 
     /* 确认一下最大占空比值（调试用，实际不输出） */
     (void)DRV_TB6612_GetMaxDuty();
@@ -109,8 +109,8 @@ void AppTest_Task(void *argument)
         DRV_TB6612_SetDuty(DRV_TB6612_CH_RR, TEST_DUTY);
         osDelay(2000);  /* 同时转2秒 */
 
-        /* 全部停止 */
-        DRV_TB6612_StopAll();
-        osDelay(2000);  /* 停2秒后再循环 */
+        // /* 全部停止 */
+        // DRV_TB6612_StopAll();
+        // osDelay(2000);  /* 停2秒后再循环 */
     }
 }
