@@ -1,114 +1,137 @@
-// #include "bsp_encoder.h"
-// #include "tim.h"
+#include "bsp_encoder.h"
 
-// // 编码器线数（每圈脉冲数*4倍频），每圈脉冲数由电机的编码器决定，需要调整！！
-// #define ENCODER_PPR (100 * 4)   // FIXME: 这里的100是编码器的脉冲数，需要根据实际编码器调整
+#include "tim.h"
 
-// /* ========== 静态变量：上次采样时的计数值 ========== */
-// static int32_t encoder_last_count[4];   // 上一次读到的原始计数
-// static int32_t encoder_current_count[4]; // 当前累积计数（带溢出处理）
-// static float   encoder_speed_rpm[4];    // 计算出的转速
+// 内部定义一个结构体Encoder_t,用于存储每个编码器的自身状态，对比.h中定义的结构体PWM_EncoderState_t更详细，且包含tim指针，内外两套定义避免外部强制更改编码器状态。
+typedef struct
+{
+    /** HAL timer handle configured in encoder mode. */
+    TIM_HandleTypeDef *htim;
+    /** Timer counter maximum value, used to distinguish 16-bit and 32-bit counters. */
+    uint32_t max_cnt;
+    /** Previous raw timer counter value. */
+    uint32_t last_cnt;
+    /** Latest signed counter delta. */
+    int32_t delta_cnt;
+    /** Latest speed in encoder timer counts per second. */
+    int32_t speed_cnt_per_s;
+} Encoder_t;
 
-// /* ========== 更新间隔（秒），在 Encoder_Init 中设置 ========== */
-// static float encoder_update_period = 0.01f;  // 默认 10ms
 
-
-// // 初始化函数
-
-// void Encoder_Init(void)
-// {
-//     // 启动 4 路编码器
-//     HAL_TIM_Encoder_Start(&htim1, TIM_CHANNEL_ALL);  // 编码器 A
-//     HAL_TIM_Encoder_Start(&htim2, TIM_CHANNEL_ALL);  // 编码器 B
-//     HAL_TIM_Encoder_Start(&htim3, TIM_CHANNEL_ALL);  // 编码器 C
-//     HAL_TIM_Encoder_Start(&htim4, TIM_CHANNEL_ALL);  // 编码器 D
-
-//     // 初始化静态变量
-//     for (int i = 0; i < 4; i++)
-//     {
-//         encoder_last_count[i] = 0;
-//         encoder_current_count[i] = 0;
-//         encoder_speed_rpm[i] = 0.0f;
-//     }
-// }
-
-// // /* ==========读取累计脉冲，处理16位溢出 ========== */
-
-// // void Encoder_GetCount(Encoder_Id encoder_id)
-// // {
-// //     if(encoder_id < Encoder_A || encoder_id > Encoder_D)
-// //         return 0;
-
-// //     // 获取对应的定时器句柄
-// //     TIM_HandleTypeDef *htim = NULL;
-// //     switch(encoder_id) {
-// //         case ENCODER_A: htim = &htim1; break;
-// //         case ENCODER_B: htim = &htim2; break;
-// //         case ENCODER_C: htim = &htim3; break;
-// //         case ENCODER_D: htim = &htim4; break;
-// //         default: return 0;
-// //     }
-    
-// //     // 读取当前硬件计数器的值
-// //     uint32_t current_raw = __HAL_TIM_GET_COUNTER(htim);
-    
-// //     // 判断定时器类型并计算总脉冲
-// //     int32_t total_pulse;
-    
-// //     if (encoder_id == ENCODER_B) {
-// //         // ===== TIM2: 32位定时器 =====
-// //         // 直接读取，不需要处理溢出
-// //         total_pulse = (int32_t)current_raw;
-// //     } else {
-// //         // ===== TIM1/3/4: 16位定时器 =====
-// //         // 需要软件处理溢出：溢出次数 × 65536 + 当前值
-// //         // 注意：encoder_current_count 需要在中断中更新
-// //         total_pulse = encoder_current_count[encoder_id] + (int32_t)current_raw;
-    
-// //         return total_pulse;
-// // }
+// 定义一个静态数组，存储四个编码器的状态，使用初始化列表指定每个编码器的定时器句柄和最大计数值。
+static Encoder_t encoder[PWM_ENCODER_NUM] = {
+    [PWM_ENCODER_CH1] = {&htim1, 0x0000FFFFu, 0u, 0, 0},
+    [PWM_ENCODER_CH2] = {&htim2, 0xFFFFFFFFu, 0u, 0, 0},
+    [PWM_ENCODER_CH3] = {&htim3, 0x0000FFFFu, 0u, 0, 0},
+    [PWM_ENCODER_CH4] = {&htim4, 0x0000FFFFu, 0u, 0, 0},
+};
 
 
 
-// // /* ==========溢出中断 ========== */
 
-// // /* ========== HAL 回调函数：处理定时器溢出中断 ========== */
-// // void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
-// // {
-// //     // 判断是哪个定时器发生了溢出
-// //     if (htim->Instance == TIM1) {
-// //         // TIM1 溢出（16位）
-// //         if (__HAL_TIM_IS_TIM_COUNTING_DOWN(htim)) {
-// //             encoder_current_count[ENCODER_A] -= 65536;  // 反转，向下溢出
-// //         } else {
-// //             encoder_current_count[ENCODER_A] += 65536;  // 正转，向上溢出
-// //         }
-// //     }
-// //     else if (htim->Instance == TIM2) {
-// //         // TIM2 是 32 位，理论上不会溢出，但为了保险也处理一下
-// //         if (__HAL_TIM_IS_TIM_COUNTING_DOWN(htim)) {
-// //             encoder_current_count[ENCODER_B] -= 0x100000000ULL;  // 32位向下溢出
-// //         } else {
-// //             encoder_current_count[ENCODER_B] += 0x100000000ULL;  // 32位向上溢出
-// //         }
-// //     }
-// //     else if (htim->Instance == TIM3) {
-// //         // TIM3 溢出（16位）
-// //         if (__HAL_TIM_IS_TIM_COUNTING_DOWN(htim)) {
-// //             encoder_current_count[ENCODER_C] -= 65536;
-// //         } else {
-// //             encoder_current_count[ENCODER_C] += 65536;
-// //         }
-// //     }
-// //     else if (htim->Instance == TIM4) {
-// //         // TIM4 溢出（16位）
-// //         if (__HAL_TIM_IS_TIM_COUNTING_DOWN(htim)) {
-// //             encoder_current_count[ENCODER_D] -= 65536;
-// //         } else {
-// //             encoder_current_count[ENCODER_D] += 65536;
-// //         }
-// //     }
-// // }
+// 处理16位计数器溢出问题，32位足够大所以直接减即可
+static int32_t Encoder_GetDelta(uint32_t now_cnt, uint32_t last_cnt, uint32_t max_cnt)
+{
+    if (max_cnt == 0x0000FFFFu)
+    {
+        return (int32_t)(int16_t)((uint16_t)(now_cnt - last_cnt));
+    }
+
+    return (int32_t)(now_cnt - last_cnt);
+}
+
+// 限幅保护，防止32转16时意外溢出，导致上位机无法判断。
+/** @brief Maximum positive speed value returned by Encoder_CalcSpeed(). */
+#define ENCODER_SPEED_MAX 2147483647LL
+/** @brief Minimum negative speed value returned by Encoder_CalcSpeed(). */
+#define ENCODER_SPEED_MIN (-2147483647LL - 1LL)
+
+// 把编码器的脉冲增量换算成速度（单位：计数值/秒），并加上溢出保护。
+static int32_t Encoder_CalcSpeed(int32_t delta_cnt, uint32_t dt_ms)
+{
+    // 计算速度 = 计数差值 / 时间间隔，单位是"编码器计数值/秒",(int64_t)强行把delta_cnt从16制转成32，防止乘1000后溢出，*1000是为了把毫秒转换为秒
+    int64_t speed = ((int64_t)delta_cnt * 1000) / (int64_t)dt_ms; 
+
+    if (speed > ENCODER_SPEED_MAX)
+    {
+        return (int32_t)ENCODER_SPEED_MAX;
+    }
+
+    if (speed < ENCODER_SPEED_MIN)
+    {
+        return (int32_t)ENCODER_SPEED_MIN;
+    }
+
+    return (int32_t)speed;
+}
 
 
+// 编码器启动函数
+void PWM_EncoderInit(void)
+{
+    for (uint8_t i = 0; i < PWM_ENCODER_NUM; i++)
+    {
+        HAL_TIM_Encoder_Start(encoder[i].htim, TIM_CHANNEL_ALL);
+        encoder[i].last_cnt = __HAL_TIM_GET_COUNTER(encoder[i].htim);
+        encoder[i].delta_cnt = 0;
+        encoder[i].speed_cnt_per_s = 0;
+    }
+}
 
+// 编码器更新函数
+void PWM_EncoderUpdate(uint32_t dt_ms)
+{
+    if (dt_ms == 0u)
+    {
+        return;
+    }
+
+    for (uint8_t i = 0; i < PWM_ENCODER_NUM; i++)
+    {
+        uint32_t now_cnt = __HAL_TIM_GET_COUNTER(encoder[i].htim);
+
+        encoder[i].delta_cnt = Encoder_GetDelta(now_cnt, encoder[i].last_cnt, encoder[i].max_cnt);
+        encoder[i].last_cnt = now_cnt;
+        encoder[i].speed_cnt_per_s = Encoder_CalcSpeed(encoder[i].delta_cnt, dt_ms);
+    }
+}
+
+
+// 定义函数以读取指定编码器的速度，单位是"编码器计数值/秒"
+int32_t PWM_GetEncoderSpeedCntPerS(PWM_EncoderId_t encoder_id)
+{
+    if (encoder_id >= PWM_ENCODER_NUM)
+    {
+        return 0;
+    }
+
+    return encoder[encoder_id].speed_cnt_per_s;
+}
+
+// 定义函数以读取指定编码器的速度变化值
+int32_t PWM_GetEncoderDelta(PWM_EncoderId_t encoder_id)
+{
+    if (encoder_id >= PWM_ENCODER_NUM)
+    {
+        return 0;
+    }
+
+    return encoder[encoder_id].delta_cnt;
+}
+
+// 定义函数以读取暂存的指定编码器计数值
+PWM_EncoderState_t PWM_GetEncoderState(PWM_EncoderId_t encoder_id)
+{
+    PWM_EncoderState_t state = {0, 0, 0};
+
+    if (encoder_id >= PWM_ENCODER_NUM)
+    {
+        return state;
+    }
+
+    state.speed_cnt_per_s = encoder[encoder_id].speed_cnt_per_s;
+    state.delta_cnt = encoder[encoder_id].delta_cnt;
+    state.counter = encoder[encoder_id].last_cnt;
+
+    return state;
+}
