@@ -23,7 +23,7 @@ void AppTest_Task(void *argument)
     //         osDelay(200);
     //     }
     // }
-
+    DRV_TB6612_Init();
     /* 确认一下最大占空比值（调试用，实际不输出） */
     (void)DRV_TB6612_GetMaxDuty();
 
@@ -32,70 +32,70 @@ void AppTest_Task(void *argument)
         /* ===== 第1轮：逐个电机测试 ===== */
 
         /* --- FL（前左）正转 --- */
-        DRV_TB6612_SetDirection(DRV_TB6612_CH_FL, DRV_TB6612_DIR_FORWARD);
-        DRV_TB6612_SetDuty(DRV_TB6612_CH_FL, TEST_DUTY);
-        osDelay(TEST_DELAY_ON);
-        DRV_TB6612_SetDuty(DRV_TB6612_CH_FL, 0);
-        DRV_TB6612_SetDirection(DRV_TB6612_CH_FL, DRV_TB6612_DIR_STOP);
-        osDelay(TEST_DELAY_OFF);
+        // DRV_TB6612_SetDirection(DRV_TB6612_CH_FL, DRV_TB6612_DIR_FORWARD);
+        // DRV_TB6612_SetDuty(DRV_TB6612_CH_FL, TEST_DUTY);
+        // //HAL_Delay(TEST_DELAY_ON);
+        // DRV_TB6612_SetDuty(DRV_TB6612_CH_FL, 0);
+        // DRV_TB6612_SetDirection(DRV_TB6612_CH_FL, DRV_TB6612_DIR_STOP);
+        // //HAL_Delay(TEST_DELAY_OFF);
 
-        /* --- FR（前右）正转 --- */
-        DRV_TB6612_SetDirection(DRV_TB6612_CH_FR, DRV_TB6612_DIR_FORWARD);
-        DRV_TB6612_SetDuty(DRV_TB6612_CH_FR, TEST_DUTY);
-        osDelay(TEST_DELAY_ON);
-        DRV_TB6612_SetDuty(DRV_TB6612_CH_FR, 0);
-        DRV_TB6612_SetDirection(DRV_TB6612_CH_FR, DRV_TB6612_DIR_STOP);
-        osDelay(TEST_DELAY_OFF);
+        // /* --- FR（前右）正转 --- */
+        // DRV_TB6612_SetDirection(DRV_TB6612_CH_FR, DRV_TB6612_DIR_FORWARD);
+        // DRV_TB6612_SetDuty(DRV_TB6612_CH_FR, TEST_DUTY);
+        // //HAL_Delay(TEST_DELAY_ON);
+        // DRV_TB6612_SetDuty(DRV_TB6612_CH_FR, 0);
+        // DRV_TB6612_SetDirection(DRV_TB6612_CH_FR, DRV_TB6612_DIR_STOP);
+        // //HAL_Delay(TEST_DELAY_OFF);
 
-        /* --- RL（后左）正转 --- */
-        DRV_TB6612_SetDirection(DRV_TB6612_CH_RL, DRV_TB6612_DIR_FORWARD);
-        DRV_TB6612_SetDuty(DRV_TB6612_CH_RL, TEST_DUTY);
-        osDelay(TEST_DELAY_ON);
-        DRV_TB6612_SetDuty(DRV_TB6612_CH_RL, 0);
-        DRV_TB6612_SetDirection(DRV_TB6612_CH_RL, DRV_TB6612_DIR_STOP);
-        osDelay(TEST_DELAY_OFF);
+        // /* --- RL（后左）正转 --- */
+        // DRV_TB6612_SetDirection(DRV_TB6612_CH_RL, DRV_TB6612_DIR_FORWARD);
+        // DRV_TB6612_SetDuty(DRV_TB6612_CH_RL, TEST_DUTY);
+        // //HAL_Delay(TEST_DELAY_ON);
+        // DRV_TB6612_SetDuty(DRV_TB6612_CH_RL, 0);
+        // DRV_TB6612_SetDirection(DRV_TB6612_CH_RL, DRV_TB6612_DIR_STOP);
+        // //HAL_Delay(TEST_DELAY_OFF);
 
-        /* --- RR（后右）正转 --- */
-        DRV_TB6612_SetDirection(DRV_TB6612_CH_RR, DRV_TB6612_DIR_FORWARD);
-        DRV_TB6612_SetDuty(DRV_TB6612_CH_RR, TEST_DUTY);
-        osDelay(TEST_DELAY_ON);
-        DRV_TB6612_SetDuty(DRV_TB6612_CH_RR, 0);
-        DRV_TB6612_SetDirection(DRV_TB6612_CH_RR, DRV_TB6612_DIR_STOP);
-        osDelay(TEST_DELAY_OFF);
+        // /* --- RR（后右）正转 --- */
+        // DRV_TB6612_SetDirection(DRV_TB6612_CH_RR, DRV_TB6612_DIR_FORWARD);
+        // DRV_TB6612_SetDuty(DRV_TB6612_CH_RR, TEST_DUTY);
+        // //HAL_Delay(TEST_DELAY_ON);
+        // DRV_TB6612_SetDuty(DRV_TB6612_CH_RR, 0);
+        // DRV_TB6612_SetDirection(DRV_TB6612_CH_RR, DRV_TB6612_DIR_STOP);
+        // //HAL_Delay(TEST_DELAY_OFF);
 
-        /* ===== 第2轮：逐个电机反转 ===== */
+        // /* ===== 第2轮：逐个电机反转 ===== */
 
-        /* --- FL 反转 --- */
-        DRV_TB6612_SetDirection(DRV_TB6612_CH_FL, DRV_TB6612_DIR_REVERSE);
-        DRV_TB6612_SetDuty(DRV_TB6612_CH_FL, TEST_DUTY);
-        osDelay(TEST_DELAY_ON);
-        DRV_TB6612_SetDuty(DRV_TB6612_CH_FL, 0);
-        DRV_TB6612_SetDirection(DRV_TB6612_CH_FL, DRV_TB6612_DIR_STOP);
-        osDelay(TEST_DELAY_OFF);
+        // /* --- FL 反转 --- */
+        // DRV_TB6612_SetDirection(DRV_TB6612_CH_FL, DRV_TB6612_DIR_REVERSE);
+        // DRV_TB6612_SetDuty(DRV_TB6612_CH_FL, TEST_DUTY);
+        // HAL_Delay(TEST_DELAY_ON);
+        // DRV_TB6612_SetDuty(DRV_TB6612_CH_FL, 0);
+        // DRV_TB6612_SetDirection(DRV_TB6612_CH_FL, DRV_TB6612_DIR_STOP);
+        // HAL_Delay(TEST_DELAY_OFF);
 
-        /* --- FR 反转 --- */
-        DRV_TB6612_SetDirection(DRV_TB6612_CH_FR, DRV_TB6612_DIR_REVERSE);
-        DRV_TB6612_SetDuty(DRV_TB6612_CH_FR, TEST_DUTY);
-        osDelay(TEST_DELAY_ON);
-        DRV_TB6612_SetDuty(DRV_TB6612_CH_FR, 0);
-        DRV_TB6612_SetDirection(DRV_TB6612_CH_FR, DRV_TB6612_DIR_STOP);
-        osDelay(TEST_DELAY_OFF);
+        // /* --- FR 反转 --- */
+        // DRV_TB6612_SetDirection(DRV_TB6612_CH_FR, DRV_TB6612_DIR_REVERSE);
+        // DRV_TB6612_SetDuty(DRV_TB6612_CH_FR, TEST_DUTY);
+        // //HAL_Delay(TEST_DELAY_ON);
+        // DRV_TB6612_SetDuty(DRV_TB6612_CH_FR, 0);
+        // DRV_TB6612_SetDirection(DRV_TB6612_CH_FR, DRV_TB6612_DIR_STOP);
+        // //HAL_Delay(TEST_DELAY_OFF);
 
-        /* --- RL 反转 --- */
-        DRV_TB6612_SetDirection(DRV_TB6612_CH_RL, DRV_TB6612_DIR_REVERSE);
-        DRV_TB6612_SetDuty(DRV_TB6612_CH_RL, TEST_DUTY);
-        osDelay(TEST_DELAY_ON);
-        DRV_TB6612_SetDuty(DRV_TB6612_CH_RL, 0);
-        DRV_TB6612_SetDirection(DRV_TB6612_CH_RL, DRV_TB6612_DIR_STOP);
-        osDelay(TEST_DELAY_OFF);
+        // /* --- RL 反转 --- */
+        // DRV_TB6612_SetDirection(DRV_TB6612_CH_RL, DRV_TB6612_DIR_REVERSE);
+        // DRV_TB6612_SetDuty(DRV_TB6612_CH_RL, TEST_DUTY);
+        // // HAL_Delay(TEST_DELAY_ON);
+        // DRV_TB6612_SetDuty(DRV_TB6612_CH_RL, 0);
+        // DRV_TB6612_SetDirection(DRV_TB6612_CH_RL, DRV_TB6612_DIR_STOP);
+        // //HAL_Delay(TEST_DELAY_OFF);
 
-        /* --- RR 反转 --- */
-        DRV_TB6612_SetDirection(DRV_TB6612_CH_RR, DRV_TB6612_DIR_REVERSE);
-        DRV_TB6612_SetDuty(DRV_TB6612_CH_RR, TEST_DUTY);
-        osDelay(TEST_DELAY_ON);
-        DRV_TB6612_SetDuty(DRV_TB6612_CH_RR, 0);
-        DRV_TB6612_SetDirection(DRV_TB6612_CH_RR, DRV_TB6612_DIR_STOP);
-        osDelay(TEST_DELAY_OFF);
+        // /* --- RR 反转 --- */
+        // DRV_TB6612_SetDirection(DRV_TB6612_CH_RR, DRV_TB6612_DIR_REVERSE);
+        // DRV_TB6612_SetDuty(DRV_TB6612_CH_RR, TEST_DUTY);
+        // //HAL_Delay(TEST_DELAY_ON);
+        // DRV_TB6612_SetDuty(DRV_TB6612_CH_RR, 0);
+        // DRV_TB6612_SetDirection(DRV_TB6612_CH_RR, DRV_TB6612_DIR_STOP);
+        // //HAL_Delay(TEST_DELAY_OFF);
 
         /* ===== 第3轮：4个电机同时正转 ===== */
         DRV_TB6612_SetDirection(DRV_TB6612_CH_FL, DRV_TB6612_DIR_FORWARD);
@@ -107,10 +107,10 @@ void AppTest_Task(void *argument)
         DRV_TB6612_SetDuty(DRV_TB6612_CH_FR, TEST_DUTY);
         DRV_TB6612_SetDuty(DRV_TB6612_CH_RL, TEST_DUTY);
         DRV_TB6612_SetDuty(DRV_TB6612_CH_RR, TEST_DUTY);
-        osDelay(2000);  /* 同时转2秒 */
+        // HAL_Delay(2000);  /* 同时转2秒 */
 
         // /* 全部停止 */
         // DRV_TB6612_StopAll();
-        // osDelay(2000);  /* 停2秒后再循环 */
+        // HAL_Delay(2000);  /* 停2秒后再循环 */
     }
 }
