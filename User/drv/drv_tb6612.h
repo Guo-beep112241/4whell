@@ -12,7 +12,7 @@ extern "C" {
 #include <stddef.h>
 //  包含main.h中的头文件，就不用再一个个包含了
 #include "main.h"
-
+#include "app_tuner.h"
  /*=====自己的version=====*/
 // 定义电机ID枚举
 
@@ -62,7 +62,7 @@ extern "C" {
 #define RL_OUT2_GPIO_Port MOTOR_OUTD1_GPIO_Port 
 
 
-// 对电机用到的通道进行统计
+// 对电机驱动用到的定时器通道进行统计
 typedef enum
 {
     DRV_TB6612_CH_FL = 0,
@@ -73,7 +73,7 @@ typedef enum
 } DRV_TB6612Channel_t;
 
 
-// 对电机的方向进行统计
+// 对电机驱动的方向进行统计
 typedef enum
 {
     DRV_TB6612_DIR_STOP = 0,

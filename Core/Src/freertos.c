@@ -25,8 +25,8 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "app_task.h"
-#include "app_test.h"
+// #include "app_task.h"
+// #include "app_test.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -100,7 +100,7 @@ void MX_FREERTOS_Init(void) {
   // AppTask_Init(); 不能直接调用init函数！！会直接陷入while循环，导致后续任务无法创建和完成
   
   /* 创建电机测试任务 */
-  // osThreadNew(AppTest_Task, NULL, &testTask_attributes);
+  
 
   /* USER CODE END RTOS_THREADS */
 

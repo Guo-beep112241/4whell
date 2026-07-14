@@ -41,7 +41,7 @@ static uint8_t DRV_TB6612_IsValidChannel(DRV_TB6612Channel_t channel)
     return channel < DRV_TB6612_CH_NUM;
 }
 
-/* ========== 内部判断输入角度是否存在========== */
+/* ========== 内部判断输入方向是否存在========== */
 static uint8_t DRV_TB6612_HasDirectionPins(const DRV_TB6612Config_t *config)
 {
     return (config->in1_port != NULL) && (config->in2_port != NULL);

@@ -37,6 +37,7 @@ targets:
         - User/app
         - User/bsp
         - User/drv
+        - User/net
       libList: []
     excludeList: []
     settings:
