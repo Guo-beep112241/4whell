@@ -38,6 +38,7 @@ targets:
         - User/bsp
         - User/drv
         - User/net
+        - User/alg
       libList: []
     excludeList: []
     settings:
