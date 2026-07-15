@@ -17,6 +17,7 @@
 
 6. 完成drv层motor文件编写，motor封装了drv_tb6612和encoder的内容，后续应用的时候只需要调用motor中Motor_SetOutputPercent()函数便可直接设置占空比，控制电机转速。
 
+7. 完成算法层pid文件和pid调试入口app_tuner的编写，目前还未烧录测试。
 
 以下是例程的项目架构，仅作参考。
 
