@@ -47,10 +47,10 @@ static int32_t Encoder_GetDelta(uint32_t now_cnt, uint32_t last_cnt, uint32_t ma
 #define ENCODER_SPEED_MIN (-2147483647LL - 1LL)
 
 // 把编码器的脉冲增量换算成速度（单位：计数值/秒），并加上溢出保护。
-static int32_t Encoder_CalcSpeed(int32_t delta_cnt, uint32_t dt_ms)
+static int32_t Encoder_CalcSpeed(int32_t delta_cnt, uint32_t dt_s)
 {
     // 计算速度 = 计数差值 / 时间间隔，单位是"编码器计数值/秒",(int64_t)强行把delta_cnt从16制转成32，防止乘1000后溢出，*1000是为了把毫秒转换为秒
-    int64_t speed = ((int64_t)delta_cnt * 1000) / (int64_t)dt_ms; 
+    int64_t speed = ((int64_t)delta_cnt ) / (int64_t)dt_s; 
 
     if (speed > ENCODER_SPEED_MAX)
     {

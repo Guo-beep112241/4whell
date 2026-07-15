@@ -124,7 +124,7 @@ static MotorOutputMode_t Motor_ApplyOutputReverse(MotorId_t motor_id, MotorOutpu
 }
 
 // 封装RPM计算公式
-static float Motor_CalcRPM(int32_t speed_cnt_per_s, float cnt_per_output_rev)
+static float Motor_CalcRPM(int16_t speed_cnt_per_s, float cnt_per_output_rev)
 {
     if (cnt_per_output_rev <= 0.0f)
     {
