@@ -29,7 +29,7 @@ extern "C" {
 #include "main.h"
 
 /* USER CODE BEGIN Includes */
-
+extern TIM_HandleTypeDef htim10;
 /* USER CODE END Includes */
 
 extern TIM_HandleTypeDef htim1;
@@ -45,7 +45,7 @@ extern TIM_HandleTypeDef htim5;
 extern TIM_HandleTypeDef htim9;
 
 /* USER CODE BEGIN Private defines */
-
+void MX_TIM10_Init(void);
 /* USER CODE END Private defines */
 
 void MX_TIM1_Init(void);
