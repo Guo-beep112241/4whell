@@ -39,6 +39,7 @@ targets:
         - User/drv
         - User/net
         - User/alg
+        - User/test
       libList: []
     excludeList: []
     settings:
