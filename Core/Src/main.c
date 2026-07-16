@@ -106,7 +106,7 @@ int main(void)
 
   // App_TestMotorSequenceStart();
   // App_TestMotorPIDStart();
-  App_TestMotorPID70PercentForwardStart();
+  // App_TestMotorPID70PercentForwardStart();
 
   /* USER CODE END 2 */
 
