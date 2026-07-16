@@ -19,7 +19,6 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "cmsis_os.h"
-#include "crc.h"
 #include "dma.h"
 #include "tim.h"
 #include "usart.h"
@@ -101,7 +100,6 @@ int main(void)
   MX_TIM9_Init();
   MX_TIM2_Init();
   MX_TIM10_Init();
-  MX_CRC_Init();
   /* USER CODE BEGIN 2 */
 
   // App_TestMotorSequenceStart();

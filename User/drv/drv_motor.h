@@ -7,7 +7,7 @@ extern "C" {
 #endif
 
 #include "main.h"
-
+#include "app_tuner.h"
 // 电机编码器的正交倍频系数
 #define MOTOR_ENCODER_QUADRATURE_MULTIPLE 4u
 
@@ -25,15 +25,15 @@ extern "C" {
 
 
 // 宏定义
-#define MOTOR_FL_OUTPUT_REVERSE
-#define MOTOR_FR_OUTPUT_REVERSE
-#define MOTOR_RL_OUTPUT_REVERSE
-#define MOTOR_RR_OUTPUT_REVERSE
+// #define MOTOR_FL_OUTPUT_REVERSE
+// #define MOTOR_FR_OUTPUT_REVERSE
+// #define MOTOR_RL_OUTPUT_REVERSE
+// #define MOTOR_RR_OUTPUT_REVERSE
 
-#define MOTOR_FL_ENCODER_REVERSE
-#define MOTOR_FR_ENCODER_REVERSE
-#define MOTOR_RL_ENCODER_REVERSE
-#define MOTOR_RR_ENCODER_REVERSE
+// #define MOTOR_FL_ENCODER_REVERSE
+// #define MOTOR_FR_ENCODER_REVERSE
+// #define MOTOR_RL_ENCODER_REVERSE
+// #define MOTOR_RR_ENCODER_REVERSE
 
 
 // 这个宏的作用：算"输出轴转一圈 = 多少个编码器脉冲"
