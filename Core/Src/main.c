@@ -27,6 +27,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "app_test.h"
+#include "test_pwm.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -101,10 +102,10 @@ int main(void)
   MX_TIM2_Init();
   MX_TIM10_Init();
   /* USER CODE BEGIN 2 */
-
+  // TestMotorSequenceStart();
   // App_TestMotorSequenceStart();
   // App_TestMotorPIDStart();
-  // App_TestMotorPID70PercentForwardStart();
+  App_TestMotorPID70PercentForwardStart(); 
 
   /* USER CODE END 2 */
 
