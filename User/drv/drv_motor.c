@@ -11,6 +11,8 @@ typedef struct
     float cnt_per_output_rev;
     /** Cached speed values. */
     MotorSpeed_t speed;
+    /** Previous filtered RPM for low-pass IIR filter (α=0.3). */
+    float filtered_rpm;
 } Motor_t;
 
 
@@ -19,22 +21,22 @@ static Motor_t motor[MOTOR_NUM] = {
     [MOTOR_RR] = {
         PWM_ENCODER_CH1,
         MOTOR_ENCODER_CNT_PER_OUTPUT_REV(MOTOR_RR_ENCODER_RESOLUTION, MOTOR_RR_REDUCTION_RATIO),
-        {0, 0.0f, 0, 0}, //速度初始化为0
+        {0, 0.0f, 0, 0}, 0.0f,
     },
     [MOTOR_FR] = {
         PWM_ENCODER_CH2,
         MOTOR_ENCODER_CNT_PER_OUTPUT_REV(MOTOR_FR_ENCODER_RESOLUTION, MOTOR_FR_REDUCTION_RATIO),
-        {0, 0.0f, 0, 0},
+        {0, 0.0f, 0, 0}, 0.0f,
     },
     [MOTOR_FL] = {
         PWM_ENCODER_CH3,
         MOTOR_ENCODER_CNT_PER_OUTPUT_REV(MOTOR_FL_ENCODER_RESOLUTION, MOTOR_FL_REDUCTION_RATIO),
-        {0, 0.0f, 0, 0},
+        {0, 0.0f, 0, 0}, 0.0f,
     },
     [MOTOR_RL] = {
         PWM_ENCODER_CH4,
         MOTOR_ENCODER_CNT_PER_OUTPUT_REV(MOTOR_RL_ENCODER_RESOLUTION, MOTOR_RL_REDUCTION_RATIO),
-        {0, 0.0f, 0, 0},
+        {0, 0.0f, 0, 0}, 0.0f,
     },
 };
 
@@ -147,6 +149,7 @@ void Motor_Init(void)
         motor[i].speed.speed_rpm = 0.0f;
         motor[i].speed.delta_cnt = 0;
         motor[i].speed.counter = 0;
+        motor[i].filtered_rpm = 0.0f;
     }
 }
 
@@ -267,6 +270,11 @@ void Motor_UpdateSpeed(uint32_t dt_ms)
         motor[i].speed.speed_rpm = Motor_CalcRPM(speed_cnt_per_s, motor[i].cnt_per_output_rev);
         motor[i].speed.delta_cnt = delta_cnt;
         motor[i].speed.counter = encoder_state.counter;
+
+        /* 一阶低通滤波: α=0.3, 截止频率≈5Hz(@100Hz采样), 平滑编码器量化噪声 */
+        motor[i].filtered_rpm = 0.3f * motor[i].speed.speed_rpm
+                              + 0.7f * motor[i].filtered_rpm;
+        motor[i].speed.speed_rpm = motor[i].filtered_rpm;
     }
 }
 

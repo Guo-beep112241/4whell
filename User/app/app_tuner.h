@@ -17,9 +17,9 @@ extern "C" {
 
 
 // 设定小车的速度pid
-#define SPEED_KP 0.4f
-#define SPEED_KI 0.0f
-#define SPEED_KD 0.0f
+#define SPEED_KP 0.2f       // 降低P减少振荡
+#define SPEED_KI 0.05f      // 加入I消除稳态误差
+#define SPEED_KD 0.015f     // 加入D抑制超调/振荡
 #define SPEED_MAX_PERCENT 100.0f  //最大占空比
 #define SPEED_INTEGRAL_LIMIT 1000.0f  //直线速度积分限制
 

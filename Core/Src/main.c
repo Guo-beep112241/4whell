@@ -26,7 +26,11 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "app_action.h"
+#include "app_straight_forward.h"
+#include "app_straight_backward.h"
+#include "app_leftstraight.h"
+#include "app_rightstraight.h"
+#include "app_rotate.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -101,30 +105,31 @@ int main(void)
   MX_TIM2_Init();
   MX_TIM10_Init();
   /* USER CODE BEGIN 2 */
-  /*
-   * 动作序列演示: 前进 → 后退 → 左移 → 右移 → 原地旋转
-   * 每个动作执行后停顿 500ms，再执行下一个
-   */
-  {
-    static const AppAction_t demo_sequence[] = {
-      { APP_ACTION_FORWARD,  0.3f, 5000, 500 },   /* 前进 2s */
-      { APP_ACTION_BACKWARD, 0.3f, 5000, 500 },   /* 后退 2s */
-      { APP_ACTION_LEFT,     0.2f, 3000, 500 },   /* 左平移 1.5s */
-      { APP_ACTION_RIGHT,    0.2f, 3000, 500 },   /* 右平移 1.5s */
-      { APP_ACTION_SPIN_CW,  1.5f, 10000, 500 },   /* 顺时针旋转 2s */
-      { APP_ACTION_SPIN_CCW, 1.5f, 10000, 500 },   /* 逆时针旋转 2s */
-      { APP_ACTION_END,      0.0f, 0,    0   },   /* 结束标记 */
-    };
-    App_ActionSequenceStart(demo_sequence, 0);
-  }
+  // App_StraightForwardStart(0.3f, 10000);   // 0.3m/s 前进 3 秒
+  // while (!App_StraightForwardIsDone()) {}  // 等待前进完成
+
+  // App_StraightBackwardStart(0.3f, 10000);  // 0.3m/s 后退 3 秒
+  // while (!App_StraightBackwardIsDone()) {} // 等待后退完成
+
+  // App_LeftStraightStart(0.3f, 5000);      // 0.3m/s 左平移 3 秒
+  // while (!App_LeftStraightIsDone()) {}      // 等待左平移完成
+
+  // App_RightStraightStart(0.3f, 5000);     // 0.3m/s 右平移 3 秒
+  // while (!App_RightStraightIsDone()) {}     // 等待右平移完成
+
+  App_RotateStart(-1.57f, 10000);            // 正转(顺时针) π/2 rad/s, 5秒
+  while (!App_RotateIsDone()) {}            // 等待正转完成
+
+  App_RotateStart(1.57f, 10000);             // 反转(逆时针) π/2 rad/s, 5秒
+  while (!App_RotateIsDone()) {}            // 等待反转完成
   /* USER CODE END 2 */
 
   /* Init scheduler */
-  osKernelInitialize();  /* Call init function for freertos objects (in cmsis_os2.c) */
-  MX_FREERTOS_Init();
+  // osKernelInitialize();  /* Call init function for freertos objects (in cmsis_os2.c) */
+  // MX_FREERTOS_Init();
 
   /* Start scheduler */
-  osKernelStart();
+  // osKernelStart();
 
   /* We should never get here as control is now taken by the scheduler */
 
