@@ -26,8 +26,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "app_test.h"
-#include "test_pwm.h"
+#include "app_action.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -102,11 +101,22 @@ int main(void)
   MX_TIM2_Init();
   MX_TIM10_Init();
   /* USER CODE BEGIN 2 */
-  // TestMotorSequenceStart();
-  // App_TestMotorSequenceStart();
-  // App_TestMotorPIDStart();
-  App_TestMotorPID70PercentForwardStart(); 
-
+  /*
+   * 动作序列演示: 前进 → 后退 → 左移 → 右移 → 原地旋转
+   * 每个动作执行后停顿 500ms，再执行下一个
+   */
+  {
+    static const AppAction_t demo_sequence[] = {
+      { APP_ACTION_FORWARD,  0.3f, 5000, 500 },   /* 前进 2s */
+      { APP_ACTION_BACKWARD, 0.3f, 5000, 500 },   /* 后退 2s */
+      { APP_ACTION_LEFT,     0.2f, 3000, 500 },   /* 左平移 1.5s */
+      { APP_ACTION_RIGHT,    0.2f, 3000, 500 },   /* 右平移 1.5s */
+      { APP_ACTION_SPIN_CW,  1.5f, 10000, 500 },   /* 顺时针旋转 2s */
+      { APP_ACTION_SPIN_CCW, 1.5f, 10000, 500 },   /* 逆时针旋转 2s */
+      { APP_ACTION_END,      0.0f, 0,    0   },   /* 结束标记 */
+    };
+    App_ActionSequenceStart(demo_sequence, 0);
+  }
   /* USER CODE END 2 */
 
   /* Init scheduler */
