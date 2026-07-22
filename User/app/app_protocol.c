@@ -202,9 +202,6 @@ static void App_Protocol_Control100HzCallback(void)
     ChassisMecanumWheelRPM_t target_rpm;
     ChassisMecanumCmd_t cmd;
 
-    /* Update encoder readings */
-    Motor_UpdateSpeed(APP_PROTOCOL_CONTROL_PERIOD_MS);
-
     /* Read target from protocol (ISR-safe: simple float reads are atomic on M4) */
     target_rpm.fl_rpm = s_target_fl_rpm;
     target_rpm.fr_rpm = s_target_fr_rpm;
@@ -214,6 +211,8 @@ static void App_Protocol_Control100HzCallback(void)
     /* If all targets are zero, skip control (saves CPU) */
     if ((target_rpm.fl_rpm == 0.0f) && (target_rpm.fr_rpm == 0.0f) &&
         (target_rpm.rl_rpm == 0.0f) && (target_rpm.rr_rpm == 0.0f)) {
+        /* Still update encoders for periodic feedback */
+        Motor_UpdateSpeed(APP_PROTOCOL_CONTROL_PERIOD_MS);
         /* Periodic feedback even when stopped */
         s_feedback_tick++;
         if (s_feedback_tick >= APP_PROTOCOL_FEEDBACK_COUNT) {
@@ -225,7 +224,8 @@ static void App_Protocol_Control100HzCallback(void)
 
     /* Convert target wheel RPM → chassis velocity command via forward kinematics,
      * then VelocityControl runs InverseKinematics → wheel RPM → speed PID.
-     * This re-uses the existing tuned PID loops in app_chasis.c. */
+     * NOTE: App_ChasisVelocityControl internally calls Motor_UpdateSpeed —
+     * do NOT call it here to avoid resetting encoder deltas twice per cycle. */
     cmd = ChassisMecanum_ForwardKinematics(target_rpm);
     App_ChasisVelocityControl(cmd, APP_PROTOCOL_CONTROL_PERIOD_MS);
 

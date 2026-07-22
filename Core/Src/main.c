@@ -106,7 +106,7 @@ int main(void)
   BSP_LED_On();   HAL_Delay(100);  BSP_LED_Off();
   HAL_Delay(100);
   BSP_LED_On();   HAL_Delay(100);  BSP_LED_Off();
-
+  
   /* USER CODE END 2 */
 
   /* Init scheduler */
