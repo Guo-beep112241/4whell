@@ -26,11 +26,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "app_straight_forward.h"
-#include "app_straight_backward.h"
-#include "app_leftstraight.h"
-#include "app_rightstraight.h"
-#include "app_rotate.h"
+#include "bsp_led.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -105,31 +101,20 @@ int main(void)
   MX_TIM2_Init();
   MX_TIM10_Init();
   /* USER CODE BEGIN 2 */
-  // App_StraightForwardStart(0.3f, 10000);   // 0.3m/s 前进 3 秒
-  // while (!App_StraightForwardIsDone()) {}  // 等待前进完成
 
-  // App_StraightBackwardStart(0.3f, 10000);  // 0.3m/s 后退 3 秒
-  // while (!App_StraightBackwardIsDone()) {} // 等待后退完成
+  /* 上电示意：LED 闪两下 */
+  BSP_LED_On();   HAL_Delay(100);  BSP_LED_Off();
+  HAL_Delay(100);
+  BSP_LED_On();   HAL_Delay(100);  BSP_LED_Off();
 
-  // App_LeftStraightStart(0.3f, 5000);      // 0.3m/s 左平移 3 秒
-  // while (!App_LeftStraightIsDone()) {}      // 等待左平移完成
-
-  // App_RightStraightStart(0.3f, 5000);     // 0.3m/s 右平移 3 秒
-  // while (!App_RightStraightIsDone()) {}     // 等待右平移完成
-
-  App_RotateStart(-1.57f, 10000);            // 正转(顺时针) π/2 rad/s, 5秒
-  while (!App_RotateIsDone()) {}            // 等待正转完成
-
-  App_RotateStart(1.57f, 10000);             // 反转(逆时针) π/2 rad/s, 5秒
-  while (!App_RotateIsDone()) {}            // 等待反转完成
   /* USER CODE END 2 */
 
   /* Init scheduler */
-  // osKernelInitialize();  /* Call init function for freertos objects (in cmsis_os2.c) */
-  // MX_FREERTOS_Init();
+  osKernelInitialize();
+  MX_FREERTOS_Init();
 
   /* Start scheduler */
-  // osKernelStart();
+  osKernelStart();
 
   /* We should never get here as control is now taken by the scheduler */
 

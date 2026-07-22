@@ -25,8 +25,9 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-// #include "app_task.h"
-// #include "app_test.h"
+#include "app_chasis.h"
+#include "app_protocol.h"
+#include "net_uart.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -120,10 +121,20 @@ void MX_FREERTOS_Init(void) {
 void StartDefaultTask(void *argument)
 {
   /* USER CODE BEGIN StartDefaultTask */
+
+  /* Initialize UART communication layer */
+  NET_UART_Init();
+
+  /* Initialize motor drivers, encoders, and PID controllers */
+  App_ChasisInit();
+
+  /* Start binary protocol parser + 100Hz PID control loop */
+  App_Protocol_Init();
+
   /* Infinite loop */
   for(;;)
   {
-    osDelay(1);
+    osDelay(100);
   }
   /* USER CODE END StartDefaultTask */
 }

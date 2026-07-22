@@ -73,11 +73,20 @@ Core/Src/dma.c \
 Core/Src/tim.c \
 Core/Src/usart.c \
 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_uart.c \
-User/app_task.c \
-User/bsp_encoder.c \
-User/bsp_pwm.c \
-User/bsp_uart.c \
-User/drv_tb6612.c
+User/app/app_test.c \
+User/app/app_chasis.c \
+User/app/app_tuner.c \
+User/app/app_protocol.c \
+User/bsp/bsp_encoder.c \
+User/bsp/bsp_timer.c \
+User/bsp/bsp_led.c \
+User/net/net_uart.c \
+User/alg/alg_mecanum.c \
+User/alg/alg_pid.c \
+User/drv/drv_motor.c \
+User/drv/drv_tb6612.c \
+Libs/CMSIS-DSP-1.17.0/Source/arm_pid_init_f32.c \
+Libs/CMSIS-DSP-1.17.0/Source/arm_pid_reset_f32.c
 
 # ASM sources
 ASM_SOURCES =  \
@@ -145,7 +154,13 @@ C_INCLUDES =  \
 -IDrivers/CMSIS/Include \
 -IMiddlewares/Third_Party/FreeRTOS/Source/include \
 -IMiddlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 \
--IMiddlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F
+-IMiddlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F \
+-IUser/app \
+-IUser/bsp \
+-IUser/net \
+-IUser/alg \
+-IUser/drv \
+-ILibs/CMSIS-DSP-1.17.0/Include
 
 
 # compile gcc flags

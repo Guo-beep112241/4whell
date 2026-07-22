@@ -1,7 +1,7 @@
 #ifndef __NET_UART_H__
 #define __NEt_UART_H__
 
-#ifdef _cplusplus
+#ifdef __cplusplus
 extern "C" {
 #endif
 
